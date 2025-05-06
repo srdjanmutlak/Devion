@@ -1,0 +1,44 @@
+{
+  "devDependencies": {
+    "@faker-js/faker": "^6.3.0",
+    "@testing-library/cypress": "^9.0.0",
+    "cypress": "^12.7.0",
+    "cypress-file-upload": "^5.0.8",
+    "cypress-if": "^1.10.4",
+    "cypress-localstorage-commands": "^2.2.2",
+    "cypress-map": "^1.13.1",
+    "cypress-multi-reporters": "^1.6.2",
+    "cypress-slow-down": "^1.2.1",
+    "cypress-xpath": "^2.0.1",
+    "dotenv": "^16.0.3",
+    "mocha": "^10.2.0",
+    "mochawesome": "^7.1.3",
+    "mochawesome-merge": "^4.2.2",
+    "mochawesome-report-generator": "^6.2.0",
+    "prettier": "2.8.4"
+  },
+  "dependencies": {
+    "axios": "^1.6.1",
+    "blob-util": "^2.0.2",
+    "chai": "^4.3.10",
+    "cypress-real-events": "^1.7.6",
+    "dayjs": "^1.11.7",
+    "fast-csv": "^4.3.6",
+    "jsonschema": "^1.4.1",
+    "rimraf": "^4.1.2",
+    "uuid": "^9.0.0",
+    "xmldom": "^0.6.0"
+  },
+  "scripts": {
+    "clean:reports": "rimraf cypress/reports && mkdir cypress/reports && mkdir cypress/reports/mochareports",
+    "pretest": "npm run clean:reports",
+    "scripts": "cypress run  --spec cypress/e2e/api/**,--spec cypress/e2e/ui/*.js",
+    "combine-reports": "mochawesome-merge ./cypress/reports/mocha/*.json > cypress/reports/mochareports/report.json",
+    "combine-videos": "find ./cypress/videos -type f -name '*.mp4' -exec mv {} ./cypress/videos \\;",
+    "combine-screenshots": "cp -r ./cypress/screenshots/ui/* ./cypress/screenshots/ && rm -r ./cypress/screenshots/ui",
+    "combine-videos-screenshots": "npm run combine-videos && npm run combine-screenshots",
+    "generate-report": "marge cypress/reports/mochareports/report.json -f report -o cypress/reports/mochareports",
+    "posttest": "npm run combine-reports && npm run generate-report && npm run combine-videos-screenshots",
+    "test": "npm run scripts || npm run posttest"
+  }
+}
