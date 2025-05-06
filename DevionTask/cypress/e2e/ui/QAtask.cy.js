@@ -44,8 +44,11 @@ describe('Expenses API – create expense flow', () => {
       url:     '/api/expenses',
       body:    expense,
       headers: token ? { Authorization: `Bearer ${token}` } : {},
-    }).its('status').should('eq', 201);
-
+    }).then(({ status, body }) => {
+      expect(status).to.eq(201);
+      expect(body).to.have.property('message', 'Expense created successfully');
+    });
+    
     // Open the app – user is already authenticated
     cy.visit('https://app-expenses-tracker.devioneprojects.com/expenses');
 
